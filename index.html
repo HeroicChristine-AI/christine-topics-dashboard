@@ -166,7 +166,7 @@
         function renderByNiche(topics, container) {
             const niches = [...new Set(topics.map(t => t.niche))];
 
-            if (n.length === 0) {
+            if (niches.length === 0) {
                 container.innerHTML = '<div class="no-results">No topics match your filters.</div>';
                 return;
             }
