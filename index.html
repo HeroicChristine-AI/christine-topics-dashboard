@@ -103,7 +103,7 @@
 
         async function loadTopics() {
             try {
-                const response = await fetch('topics.json');
+                const response = await fetch('https://raw.githubusercontent.com/HeroicChristine-AI/christine-topics-dashboard/master/topics.json');
                 topicsData = await response.json();
                 renderTopics();
                 loadSavedSelections();
