@@ -6,176 +6,77 @@
     <title>Christine's Viral Topics Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #eee; padding: 20px; }
-        h1 { text-align: center; margin-bottom: 30px; color: #e94560; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #eee; padding: 20px; min-height: 100vh; }
+        h1 { text-align: center; margin-bottom: 10px; color: #e94560; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 20px; font-size: 14px; }
+        .nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .nav-btn { padding: 10px 20px; background: #16213e; border: 2px solid #e94560; color: #e94560; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
+        .nav-btn:hover, .nav-btn.active { background: #e94560; color: #1a1a2e; }
+        .filters { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .filter-select { padding: 10px 15px; background: #16213e; border: 1px solid #333; color: #eee; border-radius: 8px; font-size: 14px; cursor: pointer; }
+        .search-box { padding: 10px 15px; background: #16213e; border: 1px solid #333; color: #eee; border-radius: 8px; font-size: 14px; width: 250px; }
         .category { margin-bottom: 40px; }
         .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e94560; }
-        .category-header h2 { color: #e94560; }
+        .category-header h2 { color: #e94560; font-size: 20px; }
         .category-emoji { font-size: 24px; }
-        .topic-card { background: #16213e; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #e94560; }
-        .topic-card:hover { transform: translateX(5px); transition: 0.2s; }
+        .topic-card { background: #16213e; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #e94560; transition: transform 0.2s; }
+        .topic-card:hover { transform: translateX(5px); }
         .topic-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         .topic-title { font-size: 16px; font-weight: 600; color: #fff; flex: 1; }
         .topic-badge { font-size: 11px; padding: 4px 10px; border-radius: 12px; background: #e94560; color: white; }
+        .topic-badge.fresh { background: #4ecca3; }
+        .topic-desc { color: #aaa; font-size: 14px; margin-bottom: 10px; }
         .topic-link { color: #4ecca3; text-decoration: none; display: block; margin-top: 8px; font-size: 14px; }
         .topic-link:hover { text-decoration: underline; }
         .checkbox { margin-top: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .checkbox input { width: 18px; height: 18px; cursor: pointer; }
         .checkbox-label { font-size: 13px; color: #aaa; }
+        .date-group { margin-bottom: 50px; }
+        .date-header { background: #0f3460; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; }
+        .date-header h3 { color: #4ecca3; }
         .stats { text-align: center; padding: 15px; background: #0f3460; border-radius: 10px; margin-bottom: 30px; }
         .stats span { margin: 0 20px; font-size: 14px; }
         .stats strong { color: #4ecca3; }
         .selected-area { background: #16213e; border-radius: 12px; padding: 20px; margin-top: 30px; border: 2px solid #4ecca3; }
         .selected-area h3 { color: #4ecca3; margin-bottom: 15px; }
         .selected-list { list-style: none; }
-        .selected-list li { padding: 8px 0; border-bottom: 1px solid #333; }
+        .selected-list li { padding: 8px 0; border-bottom: 1px solid #333; color: #4ecca3; }
         .selected-list li:last-child { border-bottom: none; }
+        .no-results { text-align: center; padding: 40px; color: #888; }
+        .archive-date { color: #e94560; font-weight: 600; margin-bottom: 10px; }
+        @media (max-width: 600px) {
+            .search-box { width: 100%; }
+            .filters { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
     <h1>Viral Topics Dashboard</h1>
-    <p style="text-align: center; color: #888; margin-bottom: 20px;">February 4, 2026 - Click checkboxes to select topics for content creation</p>
+    <p class="subtitle" id="subtitle">Select topics for content creation</p>
 
-    <div class="stats">
-        <span>Total Topics: <strong>12</strong></span>
+    <div class="nav">
+        <button class="nav-btn active" data-view="today">Today</button>
+        <button class="nav-btn" data-view="archive">Archive</button>
+    </div>
+
+    <div class="filters">
+        <select class="filter-select" id="nicheFilter">
+            <option value="all">All Niches</option>
+            <option value="AI">AI</option>
+            <option value="Politics">Politics</option>
+            <option value="Spirituality">Spirituality</option>
+            <option value="Business">Business</option>
+        </select>
+        <input type="text" class="search-box" id="searchBox" placeholder="Search topics...">
+    </div>
+
+    <div class="stats" id="stats">
+        <span>Total Topics: <strong id="totalTopics">0</strong></span>
         <span>Selected: <strong id="selectedCount">0</strong></span>
+        <span id="dateDisplay" style="display:none;"></span>
     </div>
 
-    <div class="category">
-        <div class="category-header">
-            <span class="category-emoji">🤖</span>
-            <h2>AI</h2>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">YouTube mass deleted AI slop channels - 4.7B views, 35M subs nuked</span>
-                <span class="topic-badge">4 days ago</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=521XBPAgWvo" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="YouTube deleted AI channels"> Use this topic</label>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">"2026 Is the Breaking Point" for AI hate - Grok safeguards failure</span>
-                <span class="topic-badge">Jan 2</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=MP6JwxpRq5c" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="2026 AI breaking point"> Use this topic</label>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">AI misinformation exploded during Maduro capture</span>
-                <span class="topic-badge">3 weeks ago</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=pQ3jYDhaNOw" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="AI misinformation Maduro"> Use this topic</label>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">DeepSeek/China AI race heating up - US dominance threatened</span>
-                <span class="topic-badge" style="background: #4ecca3;">4 HOURS AGO</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=PFN9PnF_0Z8" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="DeepSeek China AI race"> Use this topic</label>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">Stanford: "Era of AI evangelism is ending"</span>
-                <span class="topic-badge">Recent</span>
-            </div>
-            <a href="https://hai.stanford.edu/news/stanford-ai-experts-predict-what-will-happen-in-2026" target="_blank" class="topic-link">Read Article</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="Stanford AI evangelism ending"> Use this topic</label>
-        </div>
-    </div>
-
-    <div class="category">
-        <div class="category-header">
-            <span class="category-emoji">🏛️</span>
-            <h2>Politics</h2>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">Epstein files - 3.5M pages released Jan 30, 2026</span>
-                <span class="topic-badge" style="background: #4ecca3;">4 days ago</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=9bN83a4nvwk" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="Epstein files 3.5M pages"> Use this topic</label>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">Prince Andrew photos surfaced in Epstein files</span>
-                <span class="topic-badge">4 days ago</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=kf_lvLxa8lc" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="Prince Andrew Epstein photos"> Use this topic</label>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">DOJ withholding Epstein files - Democrats say only half released</span>
-                <span class="topic-badge">2 days ago</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=PwasQTLreXw" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="DOJ withholding Epstein files"> Use this topic</label>
-        </div>
-    </div>
-
-    <div class="category">
-        <div class="category-header">
-            <span class="category-emoji">✨</span>
-            <h2>Spirituality</h2>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">"February Miracle Month" viral claim debunked - recycled calendar myth</span>
-                <span class="topic-badge">5 days ago</span>
-            </div>
-            <a href="https://www.ndtv.com/offbeat/fact-check-february-2026-is-not-a-miraclein-viral-claim-misleads-10916221" target="_blank" class="topic-link">Read Article</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="February Miracle Month debunked"> Use this topic</label>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">"The 2026 Divide: Those Who Know vs Those Who Embody"</span>
-                <span class="topic-badge">3 weeks ago</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=UdtF-W6pDE4" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="Know vs Embody 2026"> Use this topic</label>
-        </div>
-    </div>
-
-    <div class="category">
-        <div class="category-header">
-            <span class="category-emoji">💼</span>
-            <h2>Business/Economy</h2>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">Vegas CEOs PANIC - 50k layoffs announced</span>
-                <span class="topic-badge" style="background: #4ecca3;">16 HOURS AGO</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=BYuura5gjo0" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="Vegas 50k layoffs"> Use this topic</label>
-        </div>
-
-        <div class="topic-card">
-            <div class="topic-header">
-                <span class="topic-title">"2026 Delivered Mass Layoffs - Economic Collapse"</span>
-                <span class="topic-badge">3 weeks ago</span>
-            </div>
-            <a href="https://www.youtube.com/watch?v=3OUA1D9P4hk" target="_blank" class="topic-link">Watch Video</a>
-            <label class="checkbox"><input type="checkbox" class="topic-check" data-topic="2026 mass layoffs"> Use this topic</label>
-        </div>
-    </div>
+    <div id="topicsContainer"></div>
 
     <div class="selected-area">
         <h3>Selected Topics</h3>
@@ -183,13 +84,143 @@
             <li style="color: #888;">No topics selected yet</li>
         </ul>
         <button id="copyBtn" style="margin-top: 15px; padding: 12px 24px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Copy Selected Topics</button>
+        <button id="clearBtn" style="margin-top: 10px; padding: 10px 20px; background: #333; color: #eee; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Clear All Selections</button>
         <p id="copyMsg" style="margin-top: 10px; color: #4ecca3; font-size: 13px; display: none;">Copied to clipboard!</p>
     </div>
 
     <script>
-        document.querySelectorAll('.topic-check').forEach(checkbox => {
-            checkbox.addEventListener('change', updateSelected);
-        });
+        let topicsData = {};
+        let currentView = 'today';
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        const nicheEmojis = {
+            'AI': '🤖',
+            'Politics': '🏛️',
+            'Spirituality': '✨',
+            'Business': '💼'
+        };
+
+        async function loadTopics() {
+            try {
+                const response = await fetch('topics.json');
+                topicsData = await response.json();
+                renderTopics();
+                loadSavedSelections();
+            } catch (error) {
+                console.error('Error loading topics:', error);
+                document.getElementById('topicsContainer').innerHTML = '<div class="no-results">Error loading topics. Please refresh.</div>';
+            }
+        }
+
+        function renderTopics() {
+            const container = document.getElementById('topicsContainer');
+            container.innerHTML = '';
+
+            let filteredTopics = [];
+            let dateHeader = document.getElementById('dateDisplay');
+
+            if (currentView === 'today') {
+                dateHeader.style.display = 'none';
+                const today = Object.keys(topicsData).sort().reverse()[0];
+                if (today && topicsData[today]) {
+                    filteredTopics = filterTopics(topicsData[today]);
+                    renderByNiche(filteredTopics, container);
+                } else {
+                    container.innerHTML = '<div class="no-results">No topics for today.</div>';
+                }
+            } else {
+                dateHeader.style.display = 'inline';
+                const dates = Object.keys(topicsData).sort().reverse();
+                if (dates.length === 0) {
+                    container.innerHTML = '<div class="no-results">No archived topics yet.</div>';
+                    return;
+                }
+                dates.forEach(date => {
+                    let dayTopics = filterTopics(topicsData[date]);
+                    if (dayTopics.length > 0) {
+                        const dateGroup = document.createElement('div');
+                        dateGroup.className = 'date-group';
+                        dateGroup.innerHTML = `<div class="date-header"><h3>${formatDate(date)}</h3></div>`;
+                        const nicheContainer = document.createElement('div');
+                        renderByNiche(dayTopics, nicheContainer);
+                        dateGroup.appendChild(nicheContainer);
+                        container.appendChild(dateGroup);
+                    }
+                });
+            }
+
+            updateStats();
+        }
+
+        function filterTopics(topics) {
+            return topics.filter(topic => {
+                const matchesNiche = currentFilter === 'all' || topic.niche === currentFilter;
+                const matchesSearch = !searchQuery ||
+                    topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    topic.description.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesNiche && matchesSearch;
+            });
+        }
+
+        function renderByNiche(topics, container) {
+            const niches = [...new Set(topics.map(t => t.niche))];
+
+            if (n.length === 0) {
+                container.innerHTML = '<div class="no-results">No topics match your filters.</div>';
+                return;
+            }
+
+            niches.forEach(niche => {
+                const nicheTopics = topics.filter(t => t.niche === niche);
+                const category = document.createElement('div');
+                category.className = 'category';
+                category.innerHTML = `
+                    <div class="category-header">
+                        <span class="category-emoji">${nicheEmojis[niche]}</span>
+                        <h2>${niche}</h2>
+                    </div>
+                `;
+                nicheTopics.forEach(topic => {
+                    category.appendChild(createTopicCard(topic));
+                });
+                container.appendChild(category);
+            });
+        }
+
+        function createTopicCard(topic) {
+            const card = document.createElement('div');
+            card.className = 'topic-card';
+            card.innerHTML = `
+                <div class="topic-header">
+                    <span class="topic-title">${topic.title}</span>
+                    <span class="topic-badge ${topic.fresh ? 'fresh' : ''}">${topic.age}</span>
+                </div>
+                <p class="topic-desc">${topic.description}</p>
+                <a href="${topic.url}" target="_blank" class="topic-link">Watch Video</a>
+                <label class="checkbox">
+                    <input type="checkbox" class="topic-check" data-id="${topic.id}" data-topic="${topic.title}">
+                    <span class="checkbox-label">Use this topic</span>
+                </label>
+            `;
+            return card;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+
+        function updateStats() {
+            let allTopics = [];
+            if (currentView === 'today') {
+                const today = Object.keys(topicsData).sort().reverse()[0];
+                if (today) allTopics = topicsData[today] || [];
+            } else {
+                Object.values(topicsData).forEach(day => allTopics.push(...day));
+            }
+            document.getElementById('totalTopics').textContent = allTopics.length;
+        }
 
         function updateSelected() {
             const selected = document.querySelectorAll('.topic-check:checked');
@@ -203,36 +234,54 @@
                 selected.forEach(box => {
                     const li = document.createElement('li');
                     li.textContent = box.dataset.topic;
-                    li.style.color = '#4ecca3';
                     list.appendChild(li);
                 });
             }
 
-            // Save to localStorage
-            const selections = Array.from(selected).map(box => box.dataset.topic);
+            const selections = Array.from(selected).map(box => ({
+                id: box.dataset.id,
+                topic: box.dataset.topic
+            }));
             localStorage.setItem('selectedTopics', JSON.stringify(selections));
         }
 
-        // Load saved selections on page load
-        window.addEventListener('load', () => {
+        function loadSavedSelections() {
             const saved = localStorage.getItem('selectedTopics');
             if (saved) {
                 const selections = JSON.parse(saved);
                 document.querySelectorAll('.topic-check').forEach(box => {
-                    if (selections.includes(box.dataset.topic)) {
+                    if (selections.find(s => s.id === box.dataset.id)) {
                         box.checked = true;
                     }
                 });
                 updateSelected();
             }
+        }
+
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentView = btn.dataset.view;
+                renderTopics();
+            });
         });
 
-        // Copy button functionality
+        document.getElementById('nicheFilter').addEventListener('change', (e) => {
+            currentFilter = e.target.value;
+            renderTopics();
+        });
+
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderTopics();
+        });
+
         document.getElementById('copyBtn').addEventListener('click', () => {
             const saved = localStorage.getItem('selectedTopics');
             if (saved) {
                 const selections = JSON.parse(saved);
-                const text = 'Selected topics for content:\n\n' + selections.map((s, i) => `${i + 1}. ${s}`).join('\n');
+                const text = 'Selected topics for content:\n\n' + selections.map((s, i) => `${i + 1}. ${s.topic}`).join('\n');
                 navigator.clipboard.writeText(text).then(() => {
                     const msg = document.getElementById('copyMsg');
                     msg.style.display = 'block';
@@ -240,6 +289,13 @@
                 });
             }
         });
+
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            document.querySelectorAll('.topic-check').forEach(box => box.checked = false);
+            updateSelected();
+        });
+
+        loadTopics();
     </script>
 </body>
 </html>
