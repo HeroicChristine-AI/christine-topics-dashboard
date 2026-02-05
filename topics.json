@@ -217,6 +217,15 @@
       "url": "https://www.youtube.com/watch?v=QxsWZw83YYU",
       "age": "3 weeks ago",
       "fresh": true
+    },
+    {
+      "id": "biz-6",
+      "niche": "Business",
+      "title": "Freebitcoin.in Shutdown Update: Are Withdrawals Enabled?",
+      "description": "Freebitcoin.in finally processing withdrawals after months of delays",
+      "url": "https://www.youtube.com/watch?v=loSKoYe28LQ",
+      "age": "1 day ago",
+      "fresh": true
     }
   ]
 }
