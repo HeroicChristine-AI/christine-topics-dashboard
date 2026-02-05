@@ -226,6 +226,24 @@
       "url": "https://www.youtube.com/watch?v=loSKoYe28LQ",
       "age": "1 day ago",
       "fresh": true
+    },
+    {
+      "id": "biz-7",
+      "niche": "Business",
+      "title": "Remote Work Option Ending for Thousands",
+      "description": "Provincial gov workers losing remote option, affecting tens of thousands",
+      "url": "https://www.youtube.com/shorts/qhlr-3o-FxE",
+      "age": "Jan 2",
+      "fresh": false
+    },
+    {
+      "id": "biz-8",
+      "niche": "Business",
+      "title": "Internship Scam 2026: Students Must Watch",
+      "description": "Fake remote internships exploiting students, fresh grads beware",
+      "url": "https://www.youtube.com/shorts/T5cPNY6nhdk",
+      "age": "Jan 4",
+      "fresh": true
     }
   ]
 }
