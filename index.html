@@ -7,19 +7,24 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #eee; padding: 20px; min-height: 100vh; }
-        h1 { text-align: center; margin-bottom: 10px; color: #e94560; }
+        h1 { text-align: center; margin-bottom: 10px; color: #4ecca3; }
         .subtitle { text-align: center; color: #888; margin-bottom: 20px; font-size: 14px; }
         .nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
-        .nav-btn { padding: 10px 20px; background: #16213e; border: 2px solid #e94560; color: #e94560; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
-        .nav-btn:hover, .nav-btn.active { background: #e94560; color: #1a1a2e; }
+        .nav-btn { padding: 10px 20px; background: #16213e; border: 2px solid #4ecca3; color: #4ecca3; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
+        .nav-btn:hover, .nav-btn.active { background: #4ecca3; color: #1a1a2e; }
+        .feedback-panel { background: #0f1a2e; border-radius: 12px; padding: 20px; margin-bottom: 30px; border: 1px solid #4ecca3; }
+        .feedback-panel h3 { color: #4ecca3; margin-bottom: 15px; }
+        .feedback-section { margin-bottom: 20px; }
+        .feedback-section h4 { color: #eee; margin-bottom: 10px; font-size: 14px; }
         .filters { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
         .filter-select { padding: 10px 15px; background: #16213e; border: 1px solid #333; color: #eee; border-radius: 8px; font-size: 14px; cursor: pointer; }
         .search-box { padding: 10px 15px; background: #16213e; border: 1px solid #333; color: #eee; border-radius: 8px; font-size: 14px; width: 250px; }
         .category { margin-bottom: 40px; }
-        .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #e94560; }
-        .category-header h2 { color: #e94560; font-size: 20px; }
+        .category-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #4ecca3; }
+        .category-header h2 { color: #4ecca3; font-size: 20px; }
         .category-emoji { font-size: 24px; }
-        .topic-card { background: #16213e; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #e94560; transition: transform 0.2s; }
+        .topic-card { background: #16213e; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #4ecca3; transition: transform 0.2s; position: relative; }
+        .topic-card.dont-use { border-left-color: #666; opacity: 0.6; }
         .topic-card:hover { transform: translateX(5px); }
         .topic-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         .topic-title { font-size: 16px; font-weight: 600; color: #fff; flex: 1; }
@@ -28,13 +33,18 @@
         .topic-desc { color: #aaa; font-size: 14px; margin-bottom: 10px; }
         .topic-link { color: #4ecca3; text-decoration: none; display: block; margin-top: 8px; font-size: 14px; }
         .topic-link:hover { text-decoration: underline; }
+        .topic-actions { display: flex; gap: 10px; margin-top: 10px; }
+        .topic-btn { padding: 6px 12px; background: #333; color: #eee; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .topic-btn:hover { background: #444; }
+        .topic-btn.dont-use { background: #e94560; color: white; }
+        .topic-note { background: #0a1a2e; border-radius: 6px; padding: 10px; margin-top: 10px; font-size: 12px; color: #aaa; }
         .checkbox { margin-top: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .checkbox input { width: 18px; height: 18px; cursor: pointer; }
         .checkbox-label { font-size: 13px; color: #aaa; }
         .date-group { margin-bottom: 50px; }
-        .date-header { background: #0f3460; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; }
+        .date-header { background: #0f1a2e; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; }
         .date-header h3 { color: #4ecca3; }
-        .stats { text-align: center; padding: 15px; background: #0f3460; border-radius: 10px; margin-bottom: 30px; }
+        .stats { text-align: center; padding: 15px; background: #0f1a2e; border-radius: 10px; margin-bottom: 30px; }
         .stats span { margin: 0 20px; font-size: 14px; }
         .stats strong { color: #4ecca3; }
         .selected-area { background: #16213e; border-radius: 12px; padding: 20px; margin-top: 30px; border: 2px solid #4ecca3; }
@@ -44,6 +54,9 @@
         .selected-list li:last-child { border-bottom: none; }
         .no-results { text-align: center; padding: 40px; color: #888; }
         .archive-date { color: #e94560; font-weight: 600; margin-bottom: 10px; }
+        .note-area { background: #0a1a2e; border-radius: 12px; padding: 20px; margin-top: 30px; border: 1px solid #4ecca3; }
+        .note-area h3 { color: #4ecca3; margin-bottom: 15px; }
+        .note-area textarea { width: 100%; background: #1a1a2e; border: 1px solid #333; color: #eee; border-radius: 8px; padding: 12px; font-size: 14px; font-family: inherit; resize: vertical; min-height: 80px; }
         @media (max-width: 600px) {
             .search-box { width: 100%; }
             .filters { flex-direction: column; }
@@ -52,47 +65,92 @@
 </head>
 <body>
     <h1>Viral Topics Dashboard</h1>
-    <p class="subtitle" id="subtitle">Select topics for content creation</p>
+    <p class="subtitle">Select topics for content creation</p>
 
     <div class="nav">
-        <button class="nav-btn active" data-view="today">Today</button>
-        <button class="nav-btn" data-view="archive">Archive</button>
+        <button class="nav-btn active" data-view="topics">Topics</button>
+        <button class="nav-btn" data-view="feedback">Feedback</button>
+        <button class="nav-btn" data-view="notes">Notes</button>
     </div>
 
-    <div class="filters">
-        <select class="filter-select" id="nicheFilter">
-            <option value="all">All Niches</option>
-            <option value="AI">AI</option>
-            <option value="Politics">Politics</option>
-            <option value="Spirituality">Spirituality</option>
-            <option value="Business">Business</option>
-        </select>
-        <input type="text" class="search-box" id="searchBox" placeholder="Search topics...">
+    <div class="feedback-panel" id="feedbackPanel" style="display: none;">
+        <h3>Feedback for AI</h3>
+
+        <div class="feedback-section">
+            <h4>Topic Preferences</h4>
+            <div class="filters">
+                <select class="filter-select" id="viewPreference">
+                    <option value="fresh">Show Fresh (last 3 days) first</option>
+                    <option value="all">Show All Topics</option>
+                </select>
+                <select class="filter-select" id="viewThreshold">
+                    <option value="1000">Min Views: 1000+</option>
+                    <option value="5000">Min Views: 5000+</option>
+                    <option value="10000">Min Views: 10000+</option>
+                    <option value="all">Any Views</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="feedback-section">
+            <h4>Topics to Exclude</h4>
+            <div id="excludedTopics" style="background: #16213e; border-radius: 8px; padding: 15px; margin-top: 10px;">
+                <p style="color: #888; font-size: 13px;">No exclusions yet. Click "Don't Use" on any topic to add here.</p>
+            </div>
+        </div>
+
+        <div class="feedback-section">
+            <h4>General Notes</h4>
+            <textarea id="generalNotes" class="note-area" placeholder="Add any notes for AI (topics I want to discuss, avoid topics, etc.)"></textarea>
+            <button onclick="saveNotes()" style="margin-top: 10px; padding: 10px 20px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Save Notes</button>
+        </div>
     </div>
 
-    <div class="stats" id="stats">
-        <span>Total Topics: <strong id="totalTopics">0</strong></span>
-        <span>Selected: <strong id="selectedCount">0</strong></span>
-        <span id="dateDisplay" style="display:none;"></span>
-    </div>
+    <div id="topicsPanel">
+        <div class="filters">
+            <select class="filter-select" id="nicheFilter">
+                <option value="all">All Niches</option>
+                <option value="AI">AI</option>
+                <option value="Politics">Politics</option>
+                <option value="Spirituality">Spirituality</option>
+                <option value="Business">Business</option>
+            </select>
+            <input type="text" class="search-box" id="searchBox" placeholder="Search topics...">
+        </div>
 
-    <div id="topicsContainer"></div>
+        <div class="stats" id="stats">
+            <span>Total Topics: <strong id="totalTopics">0</strong></span>
+            <span>Selected: <strong id="selectedCount">0</strong></span>
+            <span id="dateDisplay" style="display:none;"></span>
+        </div>
 
-    <div class="selected-area">
-        <h3>Selected Topics</h3>
-        <ul class="selected-list" id="selectedList">
-            <li style="color: #888;">No topics selected yet</li>
-        </ul>
-        <button id="copyBtn" style="margin-top: 15px; padding: 12px 24px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Copy Selected Topics</button>
-        <button id="clearBtn" style="margin-top: 10px; padding: 10px 20px; background: #333; color: #eee; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Clear All Selections</button>
-        <p id="copyMsg" style="margin-top: 10px; color: #4ecca3; font-size: 13px; display: none;">Copied to clipboard!</p>
+        <div id="topicsContainer"></div>
+
+        <div class="selected-area">
+            <h3>Selected Topics</h3>
+            <ul class="selected-list" id="selectedList">
+                <li style="color: #888;">No topics selected yet</li>
+            </ul>
+            <button id="copyBtn" style="margin-top: 15px; padding: 12px 24px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Copy Selected Topics</button>
+            <button id="clearBtn" style="margin-top: 10px; padding: 10px 20px; background: #333; color: #eee; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Clear All Selections</button>
+            <p id="copyMsg" style="margin-top: 10px; color: #4ecca3; font-size: 13px; display: none;">Copied to clipboard!</p>
+        </div>
+
+    <div class="note-area" id="notesPanel" style="display: none;">
+        <h3>Topic Notes</h3>
+        <textarea id="topicNotes" class="note-area" placeholder="Notes about specific topics..."></textarea>
     </div>
 
     <script>
         let topicsData = {};
-        let currentView = 'today';
+        let excludedTopics = [];
+        let currentView = 'topics';
         let currentFilter = 'all';
         let searchQuery = '';
+        let viewPreference = 'all';
+        let viewThreshold = 'all';
+        let topicNotes = {};
+        let generalNotes = '';
 
         const nicheEmojis = {
             'AI': '🤖',
@@ -105,62 +163,168 @@
             try {
                 const response = await fetch('topics.json?t=' + Date.now());
                 topicsData = await response.json();
+                loadFromStorage();
                 renderTopics();
-                loadSavedSelections();
             } catch (error) {
                 console.error('Error loading topics:', error);
-                document.getElementById('topicsContainer').innerHTML = '<div class="no-results">Error loading topics: ' + error.message + '</div>';
+                document.getElementById('topicsContainer').innerHTML = '<div class="no-results">Error loading topics. Please refresh.</div>';
             }
+        }
+
+        function loadFromStorage() {
+            const excluded = localStorage.getItem('excludedTopics');
+            if (excluded) excludedTopics = JSON.parse(excluded);
+            
+            const notes = localStorage.getItem('topicNotes');
+            if (notes) topicNotes = JSON.parse(notes);
+            
+            const general = localStorage.getItem('generalNotes');
+            if (general) generalNotes = general;
+            document.getElementById('generalNotes').value = general;
+            
+            const viewPref = localStorage.getItem('viewPreference');
+            if (viewPref) {
+                document.getElementById('viewPreference').value = viewPref;
+                viewPreference = viewPref;
+            }
+            
+            const threshold = localStorage.getItem('viewThreshold');
+            if (threshold) {
+                document.getElementById('viewThreshold').value = threshold;
+                viewThreshold = threshold;
+            }
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('excludedTopics', JSON.stringify(excludedTopics));
+            localStorage.setItem('topicNotes', JSON.stringify(topicNotes));
+            localStorage.setItem('generalNotes', document.getElementById('generalNotes').value);
+            localStorage.setItem('viewPreference', document.getElementById('viewPreference').value);
+            localStorage.setItem('viewThreshold', document.getElementById('viewThreshold').value);
+            
+            const msg = document.getElementById('copyMsg');
+            msg.style.display = 'block';
+            msg.textContent = 'Saved!';
+            setTimeout(() => msg.style.display = 'none', 1500);
         }
 
         function renderTopics() {
             const container = document.getElementById('topicsContainer');
+            const excludedList = document.getElementById('excludedTopics');
             container.innerHTML = '';
+            excludedList.innerHTML = '';
+            
+            let filteredTopics = filterTopics();
+            
+            if (filteredTopics.length === 0) {
+                container.innerHTML = '<div class="no-results">No topics match your filters.</div>';
+                excludedList.innerHTML = '<p style="color: #888; font-size: 13px;">No exclusions yet. Click "Don't Use" on any topic to add here.</p>';
+                return;
+            }
+            
+            excludedTopics.forEach(id => {
+                const title = excludedList.innerHTML + '<button onclick="unexcludeTopic(\'' + id + '\')" style="background: #e94560; color: white; border: none; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 12px; margin: 2px;">Remove</button> ';
+            });
 
-            let filteredTopics = [];
-            let dateHeader = document.getElementById('dateDisplay');
+            const dates = Object.keys(topicsData).sort().reverse();
+            let allDates = [];
+            
+            if (currentView === 'topics' || currentView === 'feedback') {
+                allDates = dates;
+            } else if (currentView === 'notes') {
+                renderNotes();
+                return;
+            }
 
-            if (currentView === 'today') {
-                dateHeader.style.display = 'none';
-                const today = Object.keys(topicsData).sort().reverse()[0];
-                if (today && topicsData[today]) {
-                    filteredTopics = filterTopics(topicsData[today]);
-                    renderByNiche(filteredTopics, container);
-                } else {
-                    container.innerHTML = '<div class="no-results">No topics for today.</div>';
-                }
-            } else {
-                dateHeader.style.display = 'inline';
-                const dates = Object.keys(topicsData).sort().reverse();
-                if (dates.length === 0) {
-                    container.innerHTML = '<div class="no-results">No archived topics yet.</div>';
-                    return;
-                }
-                dates.forEach(date => {
-                    let dayTopics = filterTopics(topicsData[date]);
-                    if (dayTopics.length > 0) {
-                        const dateGroup = document.createElement('div');
-                        dateGroup.className = 'date-group';
-                        dateGroup.innerHTML = `<div class="date-header"><h3>${formatDate(date)}</h3></div>`;
-                        const nicheContainer = document.createElement('div');
-                        renderByNiche(dayTopics, nicheContainer);
-                        dateGroup.appendChild(nicheContainer);
-                        container.appendChild(dateGroup);
-                    }
+            let topicsRendered = 0;
+
+            allDates.forEach(date => {
+                let dayTopics = topicsData[date] || [];
+                
+                dayTopics = dayTopics.filter(topic => {
+                    const matchesNiche = currentFilter === 'all' || topic.niche === currentFilter;
+                    const matchesSearch = !searchQuery || 
+                        topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        topic.description.toLowerCase().includes(searchQuery.toLowerCase());
+                    const matchesThreshold = viewThreshold === 'all' || topic.age.includes('k') || topic.age.includes('M');
+                    const notExcluded = !excludedTopics.includes(topic.id);
+                    
+                    return matchesNiche && matchesSearch && matchesThreshold && notExcluded;
                 });
+
+                if (dayTopics.length > 0 && topicsRendered < 50) {
+                    topicsRendered += dayTopics.length;
+                    const dateGroup = document.createElement('div');
+                    dateGroup.className = 'date-group';
+                    dateGroup.innerHTML = `<div class="date-header"><h3>${formatDate(date)}</h3></div>`;
+                    const nicheContainer = document.createElement('div');
+                    renderByNiche(dayTopics, nicheContainer);
+                    dateGroup.appendChild(nicheContainer);
+                    container.appendChild(dateGroup);
+                }
+            });
+
+            if (topicsRendered === 0) {
+                container.innerHTML = '<div class="no-results">No topics match your filters.</div>';
             }
 
             updateStats();
+            loadSavedSelections();
         }
 
-        function filterTopics(topics) {
-            return topics.filter(topic => {
-                const matchesNiche = currentFilter === 'all' || topic.niche === currentFilter;
-                const matchesSearch = !searchQuery ||
-                    topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    topic.description.toLowerCase().includes(searchQuery.toLowerCase());
-                return matchesNiche && matchesSearch;
+        function renderNotes() {
+            const container = document.getElementById('topicsContainer');
+            container.innerHTML = '';
+            
+            const notesList = document.getElementById('notesPanel');
+            notesList.style.display = 'block';
+            document.getElementById('feedbackPanel').style.display = 'none';
+            
+            const entries = Object.entries(topicNotes).filter(([id, note]) => note && note.trim());
+            
+            if (entries.length === 0) {
+                container.innerHTML = '<p style="color: #888; padding: 40px;">No notes yet. Click on any topic to add a note.</p>';
+                return;
+            }
+            
+            const topicsByDate = {};
+            Object.entries(topicsData).forEach(([date, topics]) => {
+                topics.forEach(topic => {
+                    const note = topicNotes[topic.id];
+                    if (note && note.trim()) {
+                        if (!topicsByDate[date]) topicsByDate[date] = [];
+                        topicsByDate[date].push({ topic, note });
+                    }
+                });
             });
+            
+            Object.entries(topicsByDate).forEach(([date, entries]) => {
+                if (entries.length > 0) {
+                    const dateGroup = document.createElement('div');
+                    dateGroup.className = 'date-group';
+                    dateGroup.innerHTML = `<div class="date-header"><h3>${formatDate(date)}</h3></div>`;
+                    
+                    entries.forEach(({topic, note}) => {
+                        const topicDiv = document.createElement('div');
+                        topicDiv.className = 'topic-card';
+                        topicDiv.innerHTML = `
+                            <div class="topic-header">
+                                <span class="topic-title">${topic.title}</span>
+                                <span class="topic-badge">${topic.niche}</span>
+                            </div>
+                            <p class="topic-desc">${topic.description}</p>
+                            <div class="topic-note">${note}</div>
+                            <a href="${topic.url}" target="_blank" class="topic-link">Watch Video</a>
+                        `;
+                        dateGroup.appendChild(topicDiv);
+                    });
+                    
+                    container.appendChild(dateGroup);
+                }
+            });
+            
+            document.getElementById('totalTopics').textContent = entries.length;
+            document.getElementById('selectedCount').textContent = '0';
         }
 
         function renderByNiche(topics, container) {
@@ -189,8 +353,10 @@
         }
 
         function createTopicCard(topic) {
+            const isExcluded = excludedTopics.includes(topic.id);
             const card = document.createElement('div');
-            card.className = 'topic-card';
+            card.className = `topic-card ${isExcluded ? 'dont-use' : ''}`;
+            card.dataset.id = topic.id;
             card.innerHTML = `
                 <div class="topic-header">
                     <span class="topic-title">${topic.title}</span>
@@ -198,10 +364,15 @@
                 </div>
                 <p class="topic-desc">${topic.description}</p>
                 <a href="${topic.url}" target="_blank" class="topic-link">Watch Video</a>
-                <label class="checkbox">
+                <div class="topic-actions">
+                    ${isExcluded ? 
+                        '<button class="topic-btn dont-use" onclick="unexcludeTopic(\'' + topic.id + '\')">Don\'t Use</button>' :
+                        '<button class="topic-btn" onclick="addTopicNote(\'' + topic.id + '\')">Add Note</button>'}
+                </div>
+                <div class="checkbox">
                     <input type="checkbox" class="topic-check" data-id="${topic.id}" data-topic="${topic.title}">
                     <span class="checkbox-label">Use this topic</span>
-                </label>
+                </div>
             `;
             return card;
         }
@@ -211,58 +382,123 @@
             return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }
 
-        function updateStats() {
-            let allTopics = [];
-            if (currentView === 'today') {
-                const today = Object.keys(topicsData).sort().reverse()[0];
-                if (today) allTopics = topicsData[today] || [];
-            } else {
-                Object.values(topicsData).forEach(day => allTopics.push(...day));
-            }
-            document.getElementById('totalTopics').textContent = allTopics.length;
+        function filterTopics() {
+            return Object.values(topicsData).flat().filter(topic => {
+                const matchesNiche = currentFilter === 'all' || topic.niche === currentFilter;
+                const matchesSearch = !searchQuery || 
+                    topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    topic.description.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesThreshold = viewThreshold === 'all' || topic.age.includes('k') || topic.age.includes('M');
+                const notExcluded = !excludedTopics.includes(topic.id);
+                
+                return matchesNiche && matchesSearch && matchesThreshold && notExcluded;
+            });
         }
 
-        function updateSelected() {
-            const selected = document.querySelectorAll('.topic-check:checked');
-            document.getElementById('selectedCount').textContent = selected.length;
-
-            const list = document.getElementById('selectedList');
-            if (selected.length === 0) {
-                list.innerHTML = '<li style="color: #888;">No topics selected yet</li>';
-            } else {
-                list.innerHTML = '';
-                selected.forEach(box => {
-                    const li = document.createElement('li');
-                    li.textContent = box.dataset.topic;
-                    list.appendChild(li);
-                });
+        function excludeTopic(topicId) {
+            if (!excludedTopics.includes(topicId)) {
+                excludedTopics.push(topicId);
+                saveToStorage();
+                renderTopics();
             }
+        }
 
-            const selections = Array.from(selected).map(box => ({
-                id: box.dataset.id,
-                topic: box.dataset.topic
-            }));
-            localStorage.setItem('selectedTopics', JSON.stringify(selections));
+        function unexcludeTopic(topicId) {
+            excludedTopics = excludedTopics.filter(id => id !== topicId);
+            saveToStorage();
+            renderTopics();
+        }
+
+        function addTopicNote(topicId) {
+            const note = prompt('Add a note for this topic:');
+            if (note !== null && note.trim()) {
+                topicNotes[topicId] = note;
+                saveToStorage();
+                renderNotes();
+            }
+        }
+
+        function updateStats() {
+            let allTopics = [];
+            if (currentView === 'topics') {
+                allTopics = Object.values(topicsData).flat();
+            } else if (currentView === 'notes') {
+                allTopics = Object.entries(topicNotes).filter(([id, note]) => note && note.trim()).length;
+            }
+            document.getElementById('totalTopics').textContent = allTopics.length;
+            
+            if (currentView === 'topics') {
+                const selected = document.querySelectorAll('.topic-check:not(:checked)');
+                document.getElementById('selectedCount').textContent = selected.length;
+            }
         }
 
         function loadSavedSelections() {
             const saved = localStorage.getItem('selectedTopics');
-            if (saved) {
+            if (saved && currentView === 'topics') {
                 const selections = JSON.parse(saved);
                 document.querySelectorAll('.topic-check').forEach(box => {
                     if (selections.find(s => s.id === box.dataset.id)) {
                         box.checked = true;
                     }
                 });
-                updateSelected();
+                updateSelectedList();
+            } else {
+                document.querySelectorAll('.topic-check').forEach(box => box.checked = false);
+                document.getElementById('selectedCount').textContent = '0';
+                updateSelectedList();
             }
         }
+
+        function updateSelectedList() {
+            const list = document.getElementById('selectedList');
+            const selected = document.querySelectorAll('.topic-check:checked');
+            list.innerHTML = '';
+            
+            if (selected.length === 0) {
+                list.innerHTML = '<li style="color: #888;">No topics selected yet</li>';
+            } else {
+                selected.forEach(box => {
+                    const li = document.createElement('li');
+                    li.textContent = box.dataset.topic;
+                    li.style.color = '#4ecca3';
+                    list.appendChild(li);
+                });
+            }
+            
+            if (currentView === 'topics') {
+                const selections = Array.from(selected).map(box => ({
+                    id: box.dataset.id,
+                    topic: box.dataset.topic
+                }));
+                localStorage.setItem('selectedTopics', JSON.stringify(selections));
+            }
+        }
+
+        document.querySelectorAll('.topic-check').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedList);
+        });
 
         document.querySelectorAll('.nav-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 currentView = btn.dataset.view;
+                
+                if (currentView === 'feedback') {
+                    document.getElementById('feedbackPanel').style.display = 'block';
+                    document.getElementById('topicsPanel').style.display = 'none';
+                    document.getElementById('notesPanel').style.display = 'none';
+                } else if (currentView === 'notes') {
+                    document.getElementById('notesPanel').style.display = 'block';
+                    document.getElementById('feedbackPanel').style.display = 'none';
+                    document.getElementById('topicsPanel').style.display = 'none';
+                } else {
+                    document.getElementById('topicsPanel').style.display = 'block';
+                    document.getElementById('feedbackPanel').style.display = 'none';
+                    document.getElementById('notesPanel').style.display = 'none';
+                }
+                
                 renderTopics();
             });
         });
@@ -274,6 +510,18 @@
 
         document.getElementById('searchBox').addEventListener('input', (e) => {
             searchQuery = e.target.value;
+            renderTopics();
+        });
+
+        document.getElementById('viewPreference').addEventListener('change', (e) => {
+            viewPreference = e.target.value;
+            saveToStorage();
+            renderTopics();
+        });
+
+        document.getElementById('viewThreshold').addEventListener('change', (e) => {
+            viewThreshold = e.target.value;
+            saveToStorage();
             renderTopics();
         });
 
@@ -292,8 +540,15 @@
 
         document.getElementById('clearBtn').addEventListener('click', () => {
             document.querySelectorAll('.topic-check').forEach(box => box.checked = false);
-            updateSelected();
+            updateSelectedList();
         });
+
+        function saveNotes() {
+            saveToStorage();
+            const btn = event.target;
+            btn.textContent = 'Saved!';
+            setTimeout(() => btn.textContent = 'Save Notes', 1500);
+        }
 
         loadTopics();
     </script>
