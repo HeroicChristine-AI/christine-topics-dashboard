@@ -289,6 +289,15 @@
       "url": "https://www.youtube.com/watch?v=rmO6ywgoRsc",
       "age": "Nov 3",
       "fresh": false
+    },
+    {
+      "id": "pol-6",
+      "niche": "Politics",
+      "title": "Ransom Note Found in Savannah Guthrie Disappearance",
+      "description": "13-year-old boy swam for hours to save family, heartbreaking story",
+      "url": "https://www.youtube.com/watch?v=16NU2t7HSzo",
+      "age": "1 day ago",
+      "fresh": true
     }
   ]
 }
