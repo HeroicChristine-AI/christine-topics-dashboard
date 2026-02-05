@@ -108,5 +108,88 @@
       "age": "3 weeks ago",
       "fresh": false
     }
+  ],
+  "2026-02-05": [
+    {
+      "id": "ai-6",
+      "niche": "AI",
+      "title": "Grok AI Sparks Storm Over Deepfake Misuse on X",
+      "description": "Users tagging AI chatbot under non-consensual images of women, Musk forced restrictions",
+      "url": "https://www.youtube.com/watch?v=Omg7frU8tzc",
+      "age": "Jan 2",
+      "fresh": false
+    },
+    {
+      "id": "ai-7",
+      "niche": "AI",
+      "title": "Grok AI Faces Scrutiny Over Deepfake Images",
+      "description": "Image generator sparked outrage, Musk forced to put restrictions on platform",
+      "url": "https://www.youtube.com/watch?v=vTM4bOZtGt0",
+      "age": "3 weeks ago",
+      "fresh": false
+    },
+    {
+      "id": "ai-8",
+      "niche": "AI",
+      "title": "Mahgryn Review 2026: Deepfake Scam Exposed",
+      "description": "Viral scam using Megyn Kelly AI images exposed",
+      "url": "https://www.youtube.com/watch?v=ZQbfiyR7C9k",
+      "age": "1 week ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-9",
+      "niche": "AI",
+      "title": "It's Out of Control and Getting Worse - AI Deepfakes",
+      "description": "99% of Twitter being AI deepfake, soaring GPU prices",
+      "url": "https://www.youtube.com/watch?v=2aeyYQUKd7M",
+      "age": "Jan 1",
+      "fresh": false
+    },
+    {
+      "id": "ai-10",
+      "niche": "AI",
+      "title": "How AI Deepfakes Are Distorting Truth in News",
+      "description": "Fake videos flooding social media during major news events like Venezuela",
+      "url": "https://www.youtube.com/watch?v=2oWV3CzLRp0",
+      "age": "Jan 4",
+      "fresh": true
+    },
+    {
+      "id": "pol-4",
+      "niche": "Politics",
+      "title": "Election 2026: Breakdown of Political Chaos",
+      "description": "Salman Muqtadir satirizes upcoming 2026 election and noise cancellation",
+      "url": "https://www.youtube.com/watch?v=fuJtNN1xwNs",
+      "age": "2 days ago",
+      "fresh": true
+    },
+    {
+      "id": "spirit-3",
+      "niche": "Spirituality",
+      "title": "7 Big Predictions for 2026",
+      "description": "Global events, spiritual awakening, and earth changes predictions",
+      "url": "https://www.youtube.com/watch?v=s1C9yF2r8go",
+      "age": "2 weeks ago",
+      "fresh": true
+    },
+    {
+      "id": "biz-3",
+      "niche": "Business",
+      "title": "From Startup to Viral Sensation: Poppi Case Study",
+      "description": "Simple wellness beverage disrupts market through smart branding and TikTok",
+      "url": "https://www.youtube.com/shorts/9_WDMh6XxqM",
+      "age": "Dec 28",
+      "fresh": false
+    },
+    {
+      "id": "biz-4",
+      "niche": "Business",
+      "title": "Startup Finance Stack I Use as a Founder 2026",
+      "description": "Tools and software for running modern startup efficiently",
+      "url": "https://www.youtube.com/watch?v=kTMQJDHpV_k",
+      "age": "3 weeks ago",
+      "fresh": false
+    }
   ]
 }
