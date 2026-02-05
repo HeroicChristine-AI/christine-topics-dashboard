@@ -63,17 +63,16 @@
     </style>
 </head>
 <body>
-    <h1>Christine's Viral Topics Dashboard</h1>
-    <p class="subtitle">Today's viral topics (Feb 5, 2026)</p>
+    <h1>Viral Topics Dashboard</h1>
+    <p class="subtitle">Select topics for content creation</p>
 
     <div class="nav">
-        <button class="nav-btn active" data-view="topics">Today</button>
+        <button class="nav-btn" data-view="today">Today</button>
         <button class="nav-btn" data-view="archive">Archive</button>
         <button class="nav-btn" data-view="feedback">Feedback</button>
-        <button class="nav-btn" data-view="notes">Notes</button>
     </div>
 
-    <div class="filters">
+    <div id="filters">
         <select class="filter-select" id="nicheFilter">
             <option value="all">All Niches</option>
             <option value="AI">AI</option>
@@ -84,8 +83,8 @@
         <input type="text" class="search-box" id="searchBox" placeholder="Search topics...">
     </div>
 
-    <div class="stats" id="stats">
-        <span>Total Today: <strong id="totalToday">0</strong></span>
+    <div id="stats">
+        <span>Total Topics: <strong id="totalTopics">0</strong></span>
         <span>Selected: <strong id="selectedCount">0</strong></span>
     </div>
 
@@ -97,23 +96,16 @@
             <li style="color: #888;">No topics selected yet</li>
         </ul>
         <button id="copyBtn" style="margin-top: 15px; padding: 12px 24px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Copy Selected Topics</button>
-        <button id="clearBtn" style="margin-top: 10px; padding: 10px 20px; background: #333; color: #eee; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Clear Selection</button>
+        <button id="clearBtn" style="margin-top: 10px; padding: 10px 20px; background: #333; color: #eee; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Clear All Selections</button>
         <p id="copyMsg" style="margin-top: 10px; color: #4ecca3; font-size: 13px; display: none;">Copied to clipboard!</p>
-    </div>
-
-    <div class="note-area" id="notesPanel" style="display: none;">
-        <h3>Topic Notes</h3>
-        <textarea id="topicNotes" class="note-area" placeholder="Add notes about today's topics..."></textarea>
-        <button onclick="saveNotes()" style="margin-top: 10px; padding: 10px 20px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Save Notes</button>
     </div>
 
     <script>
         let topicsData = {};
         let excludedTopics = [];
-        let currentFilter = 'all';
+        let currentView = 'today';
         let searchQuery = '';
         let topicNotes = {};
-        let generalNotes = '';
 
         const nicheEmojis = {
             'AI': '🤖',
@@ -124,7 +116,7 @@
 
         async function loadTopics() {
             try {
-                const response = await fetch('topics.json');
+                const response = await fetch('topics.json?t=' + Date.now());
                 topicsData = await response.json();
                 loadFromStorage();
                 renderTopics();
@@ -150,52 +142,30 @@
             const container = document.getElementById('topicsContainer');
             container.innerHTML = '';
             
-            let allTopics = [];
-            const dates = Object.keys(topicsData).sort().reverse();
             const today = formatDate(new Date());
-            
-            dates.forEach(date => {
-                let dayTopics = topicsData[date] || [];
-                
-                dayTopics = dayTopics.filter(topic => {
-                    const matchesNiche = currentFilter === 'all' || topic.niche === currentFilter;
-                    const matchesSearch = !searchQuery || 
-                        topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        topic.description.toLowerCase().includes(searchQuery.toLowerCase());
-                    const matchesThreshold = viewThreshold === 'all' || topic.age.includes('k') || topic.age.includes('M');
-                    const notExcluded = !excludedTopics.includes(topic.id);
-                    
-                    return matchesNiche && matchesSearch && matchesThreshold && notExcluded;
-                });
+            let todayTopics = [];
+            let totalCount = 0;
 
-                if (dayTopics.length > 0 && date === today) {
-                    allTopics.push(...dayTopics);
+            const dates = Object.keys(topicsData).sort().reverse();
+            dates.forEach(date => {
+                const dayTopics = topicsData[date] || [];
+                if (dayTopics.length > 0) {
+                    todayTopics.push(...dayTopics);
+                    totalCount += dayTopics.length;
                 }
             });
-            
-            let filtered = allTopics;
-            if (currentFilter !== 'all') {
-                filtered = allTopics.filter(topic => topic.niche === currentFilter);
-            }
-            if (searchQuery) {
-                filtered = filtered.filter(topic => 
-                    topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    topic.description.toLowerCase().includes(searchQuery.toLowerCase()));
-            }
 
-            if (filtered.length === 0) {
-                container.innerHTML = '<div class="no-results">No topics match your filters.</div>';
-                document.getElementById('totalToday').textContent = '0';
+            if (totalCount > 0) {
+                const todayStr = formatDate(new Date());
+                container.innerHTML = `<div class="date-header"><h3>Today: ${todayStr}</h3></div>`;
+                renderByNiche(todayTopics, container);
             } else {
-                filtered.forEach(topic => {
-                    container.appendChild(createTopicCard(topic));
-                });
-
-                document.getElementById('totalToday').textContent = filtered.length;
+                container.innerHTML = '<div class="no-results">No topics found for today. Showing all topics instead.</div>';
+                document.getElementById('totalTopics').textContent = totalCount;
             }
 
-            updateSelected();
-            updateViewDates();
+            updateStats();
+            loadSavedSelections();
         }
 
         function createTopicCard(topic) {
@@ -212,7 +182,7 @@
                 <a href="${topic.url}" target="_blank" class="topic-link">Watch Video</a>
                 <div class="topic-actions">
                     ${isExcluded ? 
-                        '<button class="topic-btn dont-use" onclick="unexcludeTopic(\'' + topic.id + '\')">Don\'t Use</button>' :
+                        '<button class="topic-btn dont-use" onclick="unexcludeTopic(\'' + topic.id + '\')">Don\\'t Use</button>' :
                         '<button class="topic-btn" onclick="addTopicNote(\'' + topic.id + '\')">Add Note</button>'}
                 </div>
                 <div class="checkbox">
@@ -242,12 +212,11 @@
             if (note !== null && note.trim()) {
                 topicNotes[topicId] = note;
                 saveToStorage();
-            } else {
-                alert('Please enter a note.');
+                createTopicCard(document.querySelector(`[data-id="${topicId}"]`));
             }
         }
 
-        function updateSelected() {
+        function updateStats() {
             const selected = document.querySelectorAll('.topic-check:checked');
             document.getElementById('selectedCount').textContent = selected.length;
 
@@ -272,29 +241,6 @@
             localStorage.setItem('selectedTopics', JSON.stringify(selections));
         }
 
-        function updateViewDates() {
-            const dates = Object.keys(topicsData).sort().reverse();
-            const todayStr = formatDate(new Date());
-            const todayContainer = document.getElementById('todayContainer');
-            
-            if (todayContainer) {
-                const isToday = dates.some(d => formatDate(new Date(d)) === todayStr);
-                todayContainer.innerHTML = `<div class="date-header"><h3>Today: ${todayStr}</h3></div>`;
-            }
-        }
-
-        function saveToStorage() {
-            localStorage.setItem('excludedTopics', JSON.stringify(excludedTopics));
-            localStorage.setItem('topicNotes', JSON.stringify(topicNotes));
-            localStorage.setItem('generalNotes', document.getElementById('topicNotes').value);
-            localStorage.setItem('viewPreference', currentView);
-            
-            const msg = document.getElementById('copyMsg');
-            msg.style.display = 'block';
-            msg.textContent = 'Saved!';
-            setTimeout(() => msg.style.display = 'none', 1500);
-        }
-
         document.querySelectorAll('.topic-check').forEach(checkbox => {
             checkbox.addEventListener('change', updateSelected);
         });
@@ -305,9 +251,13 @@
                 btn.classList.add('active');
                 currentView = btn.dataset.view;
                 
-                document.getElementById('feedbackPanel').style.display = currentView === 'feedback' ? 'block' : 'none';
-                document.getElementById('notesPanel').style.display = currentView === 'notes' ? 'block' : 'none';
-                document.getElementById('topicsPanel').style.display = currentView === 'topics' ? 'block' : 'none';
+                if (currentView === 'feedback') {
+                    document.getElementById('feedbackPanel').style.display = 'block';
+                    document.getElementById('topicsPanel').style.display = 'none';
+                } else if (currentView === 'topics') {
+                    document.getElementById('topicsPanel').style.display = 'block';
+                    document.getElementById('feedbackPanel').style.display = 'none';
+                }
                 
                 loadTopics();
             });
@@ -326,11 +276,8 @@
         document.getElementById('copyBtn').addEventListener('click', () => {
             const selected = document.querySelectorAll('.topic-check:checked');
             if (selected.length > 0) {
-                const selections = Array.from(selected).map(box => {
-                    id: box.dataset.id,
-                    topic: box.dataset.topic
-                });
-                const text = 'Selected topics for content:\n\n' + selections.map((s, i) => `${i + 1}. ${s.topic}`).join('\n');
+                const selections = Array.from(selected).map(box => `${document.querySelector(`[data-id="${box.dataset.id}"] .topic-title`).textContent} (${box.dataset.topic})`);
+                const text = 'Selected topics for content:\\n\\n' + selections.join('\\n');
                 navigator.clipboard.writeText(text).then(() => {
                     const msg = document.getElementById('copyMsg');
                     msg.style.display = 'block';
@@ -344,12 +291,6 @@
             document.querySelectorAll('.topic-check').forEach(box => box.checked = false);
             updateSelected();
         });
-
-        function saveNotes() {
-            const btn = event.target;
-            btn.textContent = 'Saved!';
-            setTimeout(() => btn.textContent = 'Save Notes', 1500);
-        }
 
         function formatDate(date) {
             return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
