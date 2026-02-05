@@ -253,6 +253,33 @@
       "url": "https://www.youtube.com/live/E9y3yfTAUaE",
       "age": "5 days ago",
       "fresh": true
+    },
+    {
+      "id": "spirit-5",
+      "niche": "Spirituality",
+      "title": "2026 Theme: Spiritual Awakening for Kingdom Impact",
+      "description": "Global awakening theme for mass awareness and kingdom impact",
+      "url": "https://www.youtube.com/watch?v=y2LynR9IhOA",
+      "age": "3 weeks ago",
+      "fresh": false
+    },
+    {
+      "id": "spirit-6",
+      "niche": "Spirituality",
+      "title": "Beyond Crystal Code: Spiritual Awakening Conflicts",
+      "description": "Hidden conflicts between spiritual awakening and astrology trends",
+      "url": "https://www.youtube.com/watch?v=xZ4Ow9wqovQ",
+      "age": "3 weeks ago",
+      "fresh": false
+    },
+    {
+      "id": "spirit-7",
+      "niche": "Spirituality",
+      "title": "Reclaiming Your Joy with Apostle Joshua Selman",
+      "description": "Powerful message on experiencing spiritual awakening and reclaiming joy",
+      "url": "https://www.youtube.com/watch?v=VbUMFpEs8jU",
+      "age": "4 weeks ago",
+      "fresh": false
     }
   ]
 }
