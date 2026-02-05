@@ -12,10 +12,6 @@
         .nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
         .nav-btn { padding: 10px 20px; background: #16213e; border: 2px solid #4ecca3; color: #4ecca3; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600; }
         .nav-btn:hover, .nav-btn.active { background: #4ecca3; color: #1a1a2e; }
-        .feedback-panel { background: #0f1a2e; border-radius: 12px; padding: 20px; margin-bottom: 30px; border: 1px solid #4ecca3; display: none; }
-        .feedback-panel h3 { color: #4ecca3; margin-bottom: 15px; }
-        .feedback-section { margin-bottom: 20px; }
-        .feedback-section h4 { color: #eee; margin-bottom: 10px; font-size: 14px; }
         .filters { display: flex; justify-content: center; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
         .filter-select { padding: 10px 15px; background: #16213e; border: 1px solid #333; color: #eee; border-radius: 8px; font-size: 14px; cursor: pointer; }
         .search-box { padding: 10px 15px; background: #16213e; border: 1px solid #333; color: #eee; border-radius: 8px; font-size: 14px; width: 250px; }
@@ -24,7 +20,6 @@
         .category-header h2 { color: #4ecca3; font-size: 20px; }
         .category-emoji { font-size: 24px; }
         .topic-card { background: #16213e; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #4ecca3; transition: transform 0.2s; position: relative; }
-        .topic-card.dont-use { border-left-color: #666; opacity: 0.6; }
         .topic-card:hover { transform: translateX(5px); }
         .topic-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         .topic-title { font-size: 16px; font-weight: 600; color: #fff; flex: 1; }
@@ -33,15 +28,9 @@
         .topic-desc { color: #aaa; font-size: 14px; margin-bottom: 10px; }
         .topic-link { color: #4ecca3; text-decoration: none; display: block; margin-top: 8px; font-size: 14px; }
         .topic-link:hover { text-decoration: underline; }
-        .topic-actions { display: flex; gap: 10px; margin-top: 10px; }
-        .topic-btn { padding: 6px 12px; background: #333; color: #eee; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; }
-        .topic-btn:hover { background: #444; }
-        .topic-btn.dont-use { background: #e94560; color: white; }
-        .topic-note { background: #0f1a2e; border-radius: 6px; padding: 10px; margin-top: 10px; font-size: 12px; color: #aaa; }
         .checkbox { margin-top: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .checkbox input { width: 18px; height: 18px; cursor: pointer; }
         .checkbox-label { font-size: 13px; color: #aaa; }
-        .date-group { margin-bottom: 50px; }
         .date-header { background: #0f1a2e; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; }
         .date-header h3 { color: #4ecca3; }
         .stats { text-align: center; padding: 15px; background: #0f1a2e; border-radius: 10px; margin-bottom: 30px; }
@@ -53,9 +42,6 @@
         .selected-list li { padding: 8px 0; border-bottom: 1px solid #333; color: #4ecca3; }
         .selected-list li:last-child { border-bottom: none; }
         .no-results { text-align: center; padding: 40px; color: #888; }
-        .note-area { background: #0f1a2e; border-radius: 12px; padding: 20px; margin-top: 30px; border: 1px solid #4ecca3; display: none; }
-        .note-area h3 { color: #4ecca3; margin-bottom: 15px; }
-        .note-area textarea { width: 100%; background: #1a1a2e; border: 1px solid #333; color: #eee; border-radius: 8px; padding: 12px; font-size: 14px; font-family: inherit; resize: vertical; min-height: 80px; }
         @media (max-width: 600px) {
             .search-box { width: 100%; }
             .filters { flex-direction: column; }
@@ -63,16 +49,15 @@
     </style>
 </head>
 <body>
-    <h1>Viral Topics Dashboard</h1>
+    <h1>Christine's Viral Topics Dashboard</h1>
     <p class="subtitle">Select topics for content creation</p>
 
     <div class="nav">
-        <button class="nav-btn" data-view="today">Today</button>
-        <button class="nav-btn" data-view="archive">Archive</button>
-        <button class="nav-btn" data-view="feedback">Feedback</button>
+        <button class="nav-btn active" id="todayBtn">Today</button>
+        <button class="nav-btn" id="allBtn">All Topics</button>
     </div>
 
-    <div id="filters">
+    <div class="filters">
         <select class="filter-select" id="nicheFilter">
             <option value="all">All Niches</option>
             <option value="AI">AI</option>
@@ -83,7 +68,7 @@
         <input type="text" class="search-box" id="searchBox" placeholder="Search topics...">
     </div>
 
-    <div id="stats">
+    <div class="stats">
         <span>Total Topics: <strong id="totalTopics">0</strong></span>
         <span>Selected: <strong id="selectedCount">0</strong></span>
     </div>
@@ -102,10 +87,9 @@
 
     <script>
         let topicsData = {};
-        let excludedTopics = [];
-        let currentView = 'today';
+        let showTodayOnly = true;
+        let currentFilter = 'all';
         let searchQuery = '';
-        let topicNotes = {};
 
         const nicheEmojis = {
             'AI': '🤖',
@@ -118,7 +102,6 @@
             try {
                 const response = await fetch('topics.json?t=' + Date.now());
                 topicsData = await response.json();
-                loadFromStorage();
                 renderTopics();
             } catch (error) {
                 console.error('Error loading topics:', error);
@@ -126,52 +109,76 @@
             }
         }
 
-        function loadFromStorage() {
-            const excluded = localStorage.getItem('excludedTopics');
-            if (excluded) excludedTopics = JSON.parse(excluded);
-            
-            const notes = localStorage.getItem('topicNotes');
-            if (notes) topicNotes = JSON.parse(notes);
-            
-            const general = localStorage.getItem('generalNotes');
-            if (general) generalNotes = general;
-            document.getElementById('topicNotes').value = general;
-        }
-
         function renderTopics() {
             const container = document.getElementById('topicsContainer');
             container.innerHTML = '';
             
-            const today = formatDate(new Date());
-            let todayTopics = [];
-            let totalCount = 0;
-
             const dates = Object.keys(topicsData).sort().reverse();
+            let totalShown = 0;
+
             dates.forEach(date => {
-                const dayTopics = topicsData[date] || [];
+                let dayTopics = topicsData[date] || [];
+                
+                dayTopics = dayTopics.filter(topic => {
+                    const matchesNiche = currentFilter === 'all' || topic.niche === currentFilter;
+                    const matchesSearch = !searchQuery || 
+                        topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        topic.description.toLowerCase().includes(searchQuery.toLowerCase());
+                    return matchesNiche && matchesSearch;
+                });
+
                 if (dayTopics.length > 0) {
-                    todayTopics.push(...dayTopics);
-                    totalCount += dayTopics.length;
+                    if (showTodayOnly) {
+                        if (dates.indexOf(date) === 0) {
+                            renderDateGroup(date, dayTopics, container);
+                            totalShown += dayTopics.length;
+                        }
+                    } else {
+                        renderDateGroup(date, dayTopics, container);
+                        totalShown += dayTopics.length;
+                    }
                 }
             });
 
-            if (totalCount > 0) {
-                const todayStr = formatDate(new Date());
-                container.innerHTML = `<div class="date-header"><h3>Today: ${todayStr}</h3></div>`;
-                renderByNiche(todayTopics, container);
-            } else {
-                container.innerHTML = '<div class="no-results">No topics found for today. Showing all topics instead.</div>';
-                document.getElementById('totalTopics').textContent = totalCount;
+            if (totalShown === 0) {
+                container.innerHTML = '<div class="no-results">No topics match your filters.</div>';
             }
 
-            updateStats();
-            loadSavedSelections();
+            document.getElementById('totalTopics').textContent = totalShown;
+            updateSelected();
+        }
+
+        function renderDateGroup(date, topics, container) {
+            const dateHeader = document.createElement('div');
+            dateHeader.className = 'date-header';
+            dateHeader.innerHTML = `<h3>${date}</h3>`;
+            container.appendChild(dateHeader);
+
+            const niches = ['AI', 'Politics', 'Spirituality', 'Business'];
+            
+            niches.forEach(niche => {
+                const nicheTopics = topics.filter(t => t.niche === niche);
+                if (nicheTopics.length > 0) {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'category';
+                    
+                    const header = document.createElement('div');
+                    header.className = 'category-header';
+                    header.innerHTML = `<span class="category-emoji">${nicheEmojis[niche]}</span><h2>${niche}</h2>`;
+                    categoryDiv.appendChild(header);
+                    
+                    nicheTopics.forEach(topic => {
+                        categoryDiv.appendChild(createTopicCard(topic));
+                    });
+                    
+                    container.appendChild(categoryDiv);
+                }
+            });
         }
 
         function createTopicCard(topic) {
-            const isExcluded = excludedTopics.includes(topic.id);
             const card = document.createElement('div');
-            card.className = `topic-card ${isExcluded ? 'dont-use' : ''}`;
+            card.className = 'topic-card';
             card.dataset.id = topic.id;
             card.innerHTML = `
                 <div class="topic-header">
@@ -180,11 +187,6 @@
                 </div>
                 <p class="topic-desc">${topic.description}</p>
                 <a href="${topic.url}" target="_blank" class="topic-link">Watch Video</a>
-                <div class="topic-actions">
-                    ${isExcluded ? 
-                        '<button class="topic-btn dont-use" onclick="unexcludeTopic(\'' + topic.id + '\')">Don\\'t Use</button>' :
-                        '<button class="topic-btn" onclick="addTopicNote(\'' + topic.id + '\')">Add Note</button>'}
-                </div>
                 <div class="checkbox">
                     <input type="checkbox" class="topic-check" data-id="${topic.id}" data-topic="${topic.title}">
                     <span class="checkbox-label">Use this topic</span>
@@ -193,30 +195,7 @@
             return card;
         }
 
-        function excludeTopic(topicId) {
-            if (!excludedTopics.includes(topicId)) {
-                excludedTopics.push(topicId);
-                saveToStorage();
-                renderTopics();
-            }
-        }
-
-        function unexcludeTopic(topicId) {
-            excludedTopics = excludedTopics.filter(id => id !== topicId);
-            saveToStorage();
-            renderTopics();
-        }
-
-        function addTopicNote(topicId) {
-            const note = prompt('Add a note for this topic:');
-            if (note !== null && note.trim()) {
-                topicNotes[topicId] = note;
-                saveToStorage();
-                createTopicCard(document.querySelector(`[data-id="${topicId}"]`));
-            }
-        }
-
-        function updateStats() {
+        function updateSelected() {
             const selected = document.querySelectorAll('.topic-check:checked');
             document.getElementById('selectedCount').textContent = selected.length;
 
@@ -229,38 +208,23 @@
                 selected.forEach(box => {
                     const li = document.createElement('li');
                     li.textContent = box.dataset.topic;
-                    li.style.color = '#4ecca3';
                     list.appendChild(li);
                 });
             }
-
-            const selections = Array.from(selected).map(box => ({
-                id: box.dataset.id,
-                topic: box.dataset.topic
-            }));
-            localStorage.setItem('selectedTopics', JSON.stringify(selections));
         }
 
-        document.querySelectorAll('.topic-check').forEach(checkbox => {
-            checkbox.addEventListener('change', updateSelected);
+        document.getElementById('todayBtn').addEventListener('click', () => {
+            showTodayOnly = true;
+            document.getElementById('todayBtn').classList.add('active');
+            document.getElementById('allBtn').classList.remove('active');
+            renderTopics();
         });
 
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentView = btn.dataset.view;
-                
-                if (currentView === 'feedback') {
-                    document.getElementById('feedbackPanel').style.display = 'block';
-                    document.getElementById('topicsPanel').style.display = 'none';
-                } else if (currentView === 'topics') {
-                    document.getElementById('topicsPanel').style.display = 'block';
-                    document.getElementById('feedbackPanel').style.display = 'none';
-                }
-                
-                loadTopics();
-            });
+        document.getElementById('allBtn').addEventListener('click', () => {
+            showTodayOnly = false;
+            document.getElementById('allBtn').classList.add('active');
+            document.getElementById('todayBtn').classList.remove('active');
+            renderTopics();
         });
 
         document.getElementById('nicheFilter').addEventListener('change', (e) => {
@@ -276,8 +240,8 @@
         document.getElementById('copyBtn').addEventListener('click', () => {
             const selected = document.querySelectorAll('.topic-check:checked');
             if (selected.length > 0) {
-                const selections = Array.from(selected).map(box => `${document.querySelector(`[data-id="${box.dataset.id}"] .topic-title`).textContent} (${box.dataset.topic})`);
-                const text = 'Selected topics for content:\\n\\n' + selections.join('\\n');
+                const selections = Array.from(selected).map(box => `${box.dataset.topic}`);
+                const text = 'Selected topics for content:\n\n' + selections.map((s, i) => `${i + 1}. ${s}`).join('\n');
                 navigator.clipboard.writeText(text).then(() => {
                     const msg = document.getElementById('copyMsg');
                     msg.style.display = 'block';
@@ -292,9 +256,9 @@
             updateSelected();
         });
 
-        function formatDate(date) {
-            return date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-        }
+        document.querySelectorAll('.topic-check').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelected);
+        });
 
         loadTopics();
     </script>
