@@ -20,6 +20,7 @@
         .category-header h2 { color: #4ecca3; font-size: 20px; }
         .category-emoji { font-size: 24px; }
         .topic-card { background: #16213e; border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #4ecca3; transition: transform 0.2s; position: relative; }
+        .topic-card.checked { background: #1a2a3e; border-left-color: #4ecca3; }
         .topic-card:hover { transform: translateX(5px); }
         .topic-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
         .topic-title { font-size: 16px; font-weight: 600; color: #fff; flex: 1; }
@@ -47,6 +48,8 @@
             .filters { flex-direction: column; }
         }
     </style>
+        .no-results { text-align: center; padding: 40px; color: #888; }
+        .topic-card.checked { background: #1a2a3e; border-left-color: #4ecca3; }
 </head>
 <body>
     <h1>Christine's Viral Topics Dashboard</h1>
@@ -82,11 +85,13 @@
         </ul>
         <button id="copyBtn" style="margin-top: 15px; padding: 12px 24px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Copy Selected Topics</button>
         <button id="clearBtn" style="margin-top: 10px; padding: 10px 20px; background: #333; color: #eee; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Clear All Selections</button>
+        <button id="createContentBtn" style="margin-top: 10px; padding: 12px 24px; background: #e94560; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Create Content from Checked</button>
         <p id="copyMsg" style="margin-top: 10px; color: #4ecca3; font-size: 13px; display: none;">Copied to clipboard!</p>
     </div>
 
     <script>
         let topicsData = {};
+        let checkedState = {};  // Track checked-off topics
         let showTodayOnly = true;
         let currentFilter = 'all';
         let searchQuery = '';
@@ -102,6 +107,13 @@
             try {
                 const response = await fetch('topics.json?t=' + Date.now());
                 topicsData = await response.json();
+                
+                // Load checked state
+                const savedChecked = localStorage.getItem('checkedState');
+                if (savedChecked) {
+                    checkedState = JSON.parse(savedChecked);
+                }
+                
                 renderTopics();
             } catch (error) {
                 console.error('Error loading topics:', error);
@@ -178,8 +190,9 @@
         }
 
         function createTopicCard(topic) {
+            const isChecked = checkedState[topic.id] || false;
             const card = document.createElement('div');
-            card.className = 'topic-card';
+            card.className = `topic-card ${isChecked ? 'checked' : ''}`;
             card.dataset.id = topic.id;
             card.innerHTML = `
                 <div class="topic-header">
@@ -189,10 +202,20 @@
                 <p class="topic-desc">${topic.description}</p>
                 <a href="${topic.url}" target="_blank" class="topic-link">Watch Video</a>
                 <div class="checkbox">
-                    <input type="checkbox" class="topic-check" data-id="${topic.id}" data-topic="${topic.title}">
-                    <span class="checkbox-label">Use this topic</span>
+                    <input type="checkbox" class="topic-check" data-id="${topic.id}" data-topic="${topic.title}" ${isChecked ? 'checked' : ''}>
+                    <span class="checkbox-label">${isChecked ? '✓ Selected' : 'Select this topic'}</span>
                 </div>
             `;
+            
+            const checkbox = card.querySelector('.topic-check');
+            if (checkbox) {
+                checkbox.addEventListener('change', (e) => {
+                    const topicId = e.target.dataset.id;
+                    checkedState[topicId] = e.target.checked;
+                    localStorage.setItem('checkedState', JSON.stringify(checkedState));
+                });
+            }
+            
             return card;
         }
 
