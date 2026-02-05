@@ -129,7 +129,8 @@
 
                 if (dayTopics.length > 0) {
                     if (showTodayOnly) {
-                        if (dates.indexOf(date) === 0) {
+                        // Render most recent date only
+                        if (dates.indexOf(date) === dates.length - 1) {
                             renderDateGroup(date, dayTopics, container);
                             totalShown += dayTopics.length;
                         }
