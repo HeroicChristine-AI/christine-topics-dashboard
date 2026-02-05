@@ -190,6 +190,33 @@
       "url": "https://www.youtube.com/watch?v=kTMQJDHpV_k",
       "age": "3 weeks ago",
       "fresh": false
+    },
+    {
+      "id": "spirit-4",
+      "niche": "Spirituality",
+      "title": "111 Manifestation Portal Opens January 11",
+      "description": "Sacred energetic gateway activates for cosmic alignment and divine power",
+      "url": "https://www.youtube.com/watch?v=Q7jUwwHfwlc",
+      "age": "4 weeks ago",
+      "fresh": false
+    },
+    {
+      "id": "biz-5",
+      "niche": "Business",
+      "title": "Disney to Invest $1 Billion in OpenAI",
+      "description": "License iconic characters for Sora generative video platform",
+      "url": "https://www.youtube.com/watch?v=ZDOmrZoRkMg",
+      "age": "Dec 11",
+      "fresh": false
+    },
+    {
+      "id": "ai-11",
+      "niche": "AI",
+      "title": "Ex-OpenAI Mastermind: It's Coming in 2026",
+      "description": "Ilya Sutskever warning about AGI timeline sparking viral debate",
+      "url": "https://www.youtube.com/watch?v=QxsWZw83YYU",
+      "age": "3 weeks ago",
+      "fresh": true
     }
   ]
 }
