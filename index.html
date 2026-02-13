@@ -305,7 +305,7 @@
             
             // Send to webhook
             const m = document.getElementById('copyMsg');
-            m.innerHTML = 'Sending request to Geo...';
+            m.innerHTML = 'Sending request to Geometric...';
             m.style.display = 'block';
             
             try {
@@ -334,7 +334,7 @@
                 const url = card.querySelector('.topic-link').href;
                 topicData.push({title: b.dataset.topic, url: url});
             });
-            const msg = 'Geo, create content from these topics:\n\n' + topicData.map((tp, i) => (i + 1) + '. ' + tp.title + '\n   ' + tp.url).join('\n\n') + '\n\nPlease write scripts and posts for these.';
+            const msg = 'Geometric, create content from these topics:\n\n' + topicData.map((tp, i) => (i + 1) + '. ' + tp.title + '\n   ' + tp.url).join('\n\n') + '\n\nPlease write scripts and posts for these.';
             navigator.clipboard.writeText(msg);
             document.getElementById('copyMsg').innerHTML = '✓ Copied to clipboard! Paste in Telegram.';
         }
