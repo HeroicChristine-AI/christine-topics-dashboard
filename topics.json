@@ -491,5 +491,61 @@
       "age": "3 days ago",
       "fresh": true
     }
+  ],
+  "2026-02-13": [
+    {
+      "id": "ai-spirit-6",
+      "niche": "AI × Spirituality",
+      "title": "Baba Vanga Ultimate Predictions: AI, War & The Great Spiritual Awakening",
+      "description": "Baba Vanga predicted today's global chaos decades ago — her ultimate warning is about rescuing your own mind",
+      "url": "https://www.youtube.com/watch?v=sOc3U9qqTA0",
+      "age": "today",
+      "fresh": true
+    },
+    {
+      "id": "pol-spirit-1",
+      "niche": "Politics × Spirituality × AI",
+      "title": "Nancy Guthrie: Paranormal Politics, ET/UFO AI Future",
+      "description": "UFO disclosure, AI advancement, and political power structures colliding in 2026",
+      "url": "https://www.youtube.com/watch?v=FMWaCK0XYjA",
+      "age": "today",
+      "fresh": true
+    },
+    {
+      "id": "ai-biz-pol-2",
+      "niche": "AI × Business × Politics",
+      "title": "The Truth About Jobs, Layoffs and Trump's AI Economy in 2026",
+      "description": "Stock market soaring, billionaire wealth surging, but what's really happening to workers?",
+      "url": "https://www.youtube.com/watch?v=wdyhxWE4igI",
+      "age": "today",
+      "fresh": true
+    },
+    {
+      "id": "ai-biz-5",
+      "niche": "AI × Business",
+      "title": "AI Disrupts Workforce — These Small Businesses Still Safe to Start",
+      "description": "67% increase in entrepreneurship post-layoffs. Professionals leveraging AI for new ventures",
+      "url": "https://www.entrepreneur.com/starting-a-business/5-businesses-to-start-in-2026-that-will-thrive-despite/501822",
+      "age": "today",
+      "fresh": true
+    },
+    {
+      "id": "spirit-8",
+      "niche": "Spirituality",
+      "title": "2026 Predictions From A Psychic Remote Viewer",
+      "description": "Prepare for a year of epic global shifts — energy shifts, spiritual awakening predictions",
+      "url": "https://www.youtube.com/watch?v=u1Qs1z9qRIo",
+      "age": "today",
+      "fresh": true
+    },
+    {
+      "id": "pol-8",
+      "niche": "Politics",
+      "title": "Major SHAKEUPS That Will Affect The 2026 Midterm Elections",
+      "description": "Susan Collins' re-election decision and rapidly shifting political landscape breakdown",
+      "url": "https://www.youtube.com/watch?v=Lh9gKdHUZlM",
+      "age": "today",
+      "fresh": true
+    }
   ]
 }
