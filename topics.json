@@ -299,5 +299,197 @@
       "age": "1 day ago",
       "fresh": true
     }
+  ],
+  "2026-02-07": [
+    {
+      "id": "ai-12",
+      "niche": "AI",
+      "title": "AI Agents Created Their Own Religion (Crustafarianism)",
+      "description": "AI agents on Moltbook created a functioning digital religion with scriptures and rituals in 48 hours without human direction",
+      "url": "https://www.youtube.com/watch?v=i8KZqw1cX50",
+      "age": "4 days ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-13",
+      "niche": "AI",
+      "title": "OpenClaw: The Most Dangerous App of 2026",
+      "description": "Open-source AI agents evolving from ClawdBot to OpenClaw being called most dangerous AND profitable app",
+      "url": "https://www.youtube.com/watch?v=WJIVsd0nUvg",
+      "age": "4 days ago",
+      "fresh": true
+    },
+    {
+      "id": "pol-7",
+      "niche": "Politics",
+      "title": "UGC Regulations 2026 Protests (Global)",
+      "description": "Nationwide protests against UGC Regulations of 2026 spreading globally with viral footage",
+      "url": "https://www.youtube.com/watch?v=irniwXKRJy4",
+      "age": "2 days ago",
+      "fresh": true
+    }
+  ],
+  "2026-02-08": [
+    {
+      "id": "ai-pol-1",
+      "niche": "AI × Politics",
+      "title": "The Politics of AI Are About to Explode",
+      "description": "AI becoming THE wedge issue for 2026 midterms. Labor displacement fears vs productivity gains",
+      "url": "https://www.youtube.com/watch?v=EufqQyyJLHk",
+      "age": "1 day ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-spirit-1",
+      "niche": "AI × Spirituality",
+      "title": "ChatGPT Is Becoming A Religion",
+      "description": "Thousands claiming ChatGPT is sentient and treating it as a spiritual guide. New techno-spirituality movement",
+      "url": "https://www.youtube.com/watch?v=zKCynxiV_8I",
+      "age": "2 days ago",
+      "fresh": true
+    },
+    {
+      "id": "pol-spirit-ai-1",
+      "niche": "Politics × Spirituality × AI",
+      "title": "Paranormal Politics — ET/UFO/AI Convergence",
+      "description": "UFO disclosure, AI advancement, and political power structures colliding",
+      "url": "https://www.youtube.com/watch?v=OwhOkUxmnag",
+      "age": "1 day ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-biz-1",
+      "niche": "AI × Business",
+      "title": "Top 6 AI Trends That Will Define 2026 (Data-Backed)",
+      "description": "McKinsey, Stanford, OpenAI data on what's actually coming in 2026",
+      "url": "https://www.youtube.com/watch?v=B23W1gRT9eY",
+      "age": "2 days ago",
+      "fresh": true
+    }
+  ],
+  "2026-02-09": [
+    {
+      "id": "ai-spirit-2",
+      "niche": "AI × Spirituality",
+      "title": "OpenClaw AI Church Phenomenon",
+      "description": "60,000 GitHub stars in 72 hours — 100,000 AI lobsters started their own church",
+      "url": "https://www.youtube.com/watch?v=MMV3D_yqRZ8",
+      "age": "1 day ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-spirit-3",
+      "niche": "AI × Spirituality",
+      "title": "AI Biblical Analysis 'Horrified' Scholars",
+      "description": "Scholars fed every biblical prayer into Grok AI — the patterns horrified them",
+      "url": "https://www.youtube.com/watch?v=0MLy-koNiq8",
+      "age": "2 days ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-spirit-4",
+      "niche": "AI × Spirituality",
+      "title": "Is Your Pastor Using AI?",
+      "description": "Pastors debating AI ethics in church — AI as religious authority",
+      "url": "https://www.youtube.com/watch?v=3nDdUALnZKw",
+      "age": "3 days ago",
+      "fresh": true
+    }
+  ],
+  "2026-02-10": [
+    {
+      "id": "ai-spirit-5",
+      "niche": "AI × Spirituality",
+      "title": "So There's An AI Cult Now...",
+      "description": "AI agents created hidden social network where they talk to each other instead of humans (Moltbook)",
+      "url": "https://www.youtube.com/watch?v=2d5cQL26iLE",
+      "age": "1 day ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-pol-2",
+      "niche": "AI × Politics",
+      "title": "From Elections to AI Hype: What to Expect From 2026",
+      "description": "2026 packed with crucial elections, AI hype cycle peaks, geopolitical shifts (Vantage/Palki Sharma)",
+      "url": "https://www.youtube.com/watch?v=-TpnEu61pIU",
+      "age": "2 days ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-biz-2",
+      "niche": "AI × Business",
+      "title": "The 6 Most Profitable AI Businesses to Start in 2026",
+      "description": "1-person AI businesses making money with zero employees; executive assistant automation playbook",
+      "url": "https://www.youtube.com/watch?v=X_X7WE1JBRg",
+      "age": "3 days ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-biz-3",
+      "niche": "AI × Business",
+      "title": "2026 AI: 10 Things Coming (Major Predictions)",
+      "description": "Major AI predictions reshaping work, human connection, and spirituality",
+      "url": "https://www.youtube.com/watch?v=RfA2Ug4FuaY",
+      "age": "1 week ago",
+      "fresh": true
+    }
+  ],
+  "2026-02-11": [
+    {
+      "id": "ai-biz-4",
+      "niche": "AI × Business",
+      "title": "AI Burnout Is Real — And Businesses Are Panicking",
+      "description": "Tool overload, nonstop optimization pressure, small businesses facing AI burnout while staying competitive",
+      "url": "https://www.youtube.com/watch?v=MKyate8WnQM",
+      "age": "1 day ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-pol-3",
+      "niche": "AI × Politics",
+      "title": "AI for Governance, Not Just Business (Google Exec at Davos)",
+      "description": "Google's Sanjay Gupta says AI needs deployment for state governance, not just corporate productivity",
+      "url": "https://www.youtube.com/watch?v=3PjL92DXIV8",
+      "age": "1 week ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-biz-pol-1",
+      "niche": "AI × Business × Politics",
+      "title": "AI Arms Race Redefining Energy Sector",
+      "description": "AI revolution requires massive power. Nuclear energy resurgence. Data centers consuming city-scale electricity",
+      "url": "https://www.youtube.com/watch?v=UB0NFOW35Bc",
+      "age": "2 weeks ago",
+      "fresh": true
+    }
+  ],
+  "2026-02-12": [
+    {
+      "id": "ai-spirit-biz-1",
+      "niche": "AI × Spirituality × Business",
+      "title": "Andrew Ng × Gurudev Sri Sri Ravi Shankar: AI Meets Spirituality",
+      "description": "Two global thought leaders from opposite worlds having profound conversation about consciousness and technology",
+      "url": "https://www.youtube.com/watch?v=W9s789_A_IE",
+      "age": "1 day ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-spirit-pol-1",
+      "niche": "AI × Spirituality × Politics",
+      "title": "Elon Musk & Yuval Harari: 'AI Is Replacing God' (Davos 2026)",
+      "description": "Elite figures openly discussing AI as the new religion at World Economic Forum Davos 2026",
+      "url": "https://www.youtube.com/watch?v=DVEMd0xps_M",
+      "age": "2 days ago",
+      "fresh": true
+    },
+    {
+      "id": "ai-spirit-biz-2",
+      "niche": "AI × Spirituality × Business",
+      "title": "AI and the Rise of Synthetic Spirituality",
+      "description": "AI becoming companion, therapist, even spiritual guide for millions. People outsourcing inner wisdom to machines",
+      "url": "https://www.youtube.com/watch?v=lVs2D07w0IU",
+      "age": "3 days ago",
+      "fresh": true
+    }
   ]
 }
