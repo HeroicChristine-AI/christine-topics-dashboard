@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Christine's Viral Topics Dashboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,8 +51,6 @@
             .filters { flex-direction: column; }
         }
     </style>
-        .no-results { text-align: center; padding: 40px; color: #888; }
-        .topic-card.checked { background: #1a2a3e; border-left-color: #4ecca3; }
 </head>
 <body>
     <h1>Christine's Viral Topics Dashboard</h1>
@@ -85,17 +86,20 @@
         </ul>
         <button id="copyBtn" style="margin-top: 15px; padding: 12px 24px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Copy Selected Topics</button>
         <button id="clearBtn" style="margin-top: 10px; padding: 10px 20px; background: #333; color: #eee; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Clear All Selections</button>
-        <button id="createContentBtn" style="margin-top: 10px; padding: 12px 24px; background: #e94560; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Create Content from Checked</button>
+        <button id="createContentBtn" onclick="const boxes=document.querySelectorAll('.topic-check:checked');if(boxes.length===0){alert('Please select at least one topic!');return;}const t=[];boxes.forEach(b=>t.push(b.dataset.topic));alert('Creating content for: '+t.join(', '));localStorage.setItem('topicsForContent',JSON.stringify(t));const m=document.getElementById('copyMsg');m.textContent=t.length+' topic(s) queued!';m.style.display='block';setTimeout(()=>m.style.display='none',3000);" style="margin-top: 10px; padding: 12px 24px; background: #e94560; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Create Content from Checked</button>
         <p id="copyMsg" style="margin-top: 10px; color: #4ecca3; font-size: 13px; display: none;">Copied to clipboard!</p>
     </div>
 
     <script>
+        // Confirm JavaScript is running
+        console.log('=== Dashboard JavaScript starting ===');
+        
         let topicsData = {};
         let checkedState = {};  // Track checked-off topics
         let showTodayOnly = true;
         let currentFilter = 'all';
         let searchQuery = '';
-
+        
         const nicheEmojis = {
             'AI': '🤖',
             'Politics': '🏛️',
@@ -141,8 +145,8 @@
 
                 if (dayTopics.length > 0) {
                     if (showTodayOnly) {
-                        // Render most recent date only
-                        if (dates.indexOf(date) === dates.length - 1) {
+                        // Render most recent date only (dates sorted reverse, so index 0 is today)
+                        if (dates.indexOf(date) === 0) {
                             renderDateGroup(date, dayTopics, container);
                             totalShown += dayTopics.length;
                         }
@@ -277,7 +281,9 @@
 
         document.getElementById('clearBtn').addEventListener('click', () => {
             document.querySelectorAll('.topic-check').forEach(box => box.checked = false);
-            updateSelected();
+            checkedState = {};
+            localStorage.setItem('checkedState', JSON.stringify(checkedState));
+            renderTopics();
         });
 
         document.querySelectorAll('.topic-check').forEach(checkbox => {
@@ -285,6 +291,7 @@
         });
 
         loadTopics();
+        console.log('=== Dashboard JavaScript loaded ===');
     </script>
 </body>
 </html>
