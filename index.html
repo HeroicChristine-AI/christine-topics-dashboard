@@ -86,7 +86,7 @@
         </ul>
         <button id="copyBtn" style="margin-top: 15px; padding: 12px 24px; background: #4ecca3; color: #1a1a2e; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Copy Selected Topics</button>
         <button id="clearBtn" style="margin-top: 10px; padding: 10px 20px; background: #333; color: #eee; border: none; border-radius: 8px; cursor: pointer; font-size: 13px;">Clear All Selections</button>
-        <button id="createContentBtn" onclick="const boxes=document.querySelectorAll('.topic-check:checked');if(boxes.length===0){alert('Please select at least one topic!');return;}const t=[];boxes.forEach(b=>t.push(b.dataset.topic));alert('Creating content for: '+t.join(', '));localStorage.setItem('topicsForContent',JSON.stringify(t));const m=document.getElementById('copyMsg');m.textContent=t.length+' topic(s) queued!';m.style.display='block';setTimeout(()=>m.style.display='none',3000);" style="margin-top: 10px; padding: 12px 24px; background: #e94560; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Create Content from Checked</button>
+        <button id="createContentBtn" style="margin-top: 10px; padding: 12px 24px; background: #e94560; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 600;">Create Content from Checked</button>
         <p id="copyMsg" style="margin-top: 10px; color: #4ecca3; font-size: 13px; display: none;">Copied to clipboard!</p>
     </div>
 
@@ -288,6 +288,26 @@
 
         document.querySelectorAll('.topic-check').forEach(checkbox => {
             checkbox.addEventListener('change', updateSelected);
+        });
+
+        document.getElementById('createContentBtn').addEventListener('click', () => {
+            const boxes = document.querySelectorAll('.topic-check:checked');
+            if (boxes.length === 0) {
+                alert('Please select at least one topic!');
+                return;
+            }
+            const topicData = [];
+            boxes.forEach(b => {
+                const card = b.closest('.topic-card');
+                const url = card.querySelector('.topic-link').href;
+                topicData.push({title: b.dataset.topic, url: url});
+            });
+            const msg = 'Geo, create content from these topics:\n\n' + topicData.map((tp, i) => (i + 1) + '. ' + tp.title + '\n   ' + tp.url).join('\n\n') + '\n\nPlease write scripts and posts for these.';
+            navigator.clipboard.writeText(msg).then(() => {
+                const m = document.getElementById('copyMsg');
+                m.innerHTML = '✓ Message copied to clipboard!<br><br><strong>Now paste this message in Telegram to Geo</strong><br><br><a href="tg://resolve?domain=heroicchristine" style="color:#4ecca3;">Open Telegram →</a>';
+                m.style.display = 'block';
+            });
         });
 
         loadTopics();
