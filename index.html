@@ -290,7 +290,7 @@
             checkbox.addEventListener('change', updateSelected);
         });
 
-        document.getElementById('createContentBtn').addEventListener('click', () => {
+        document.getElementById('createContentBtn').addEventListener('click', async () => {
             const boxes = document.querySelectorAll('.topic-check:checked');
             if (boxes.length === 0) {
                 alert('Please select at least one topic!');
@@ -302,13 +302,42 @@
                 const url = card.querySelector('.topic-link').href;
                 topicData.push({title: b.dataset.topic, url: url});
             });
-            const msg = 'Geo, create content from these topics:\n\n' + topicData.map((tp, i) => (i + 1) + '. ' + tp.title + '\n   ' + tp.url).join('\n\n') + '\n\nPlease write scripts and posts for these.';
-            navigator.clipboard.writeText(msg).then(() => {
-                const m = document.getElementById('copyMsg');
-                m.innerHTML = '✓ Message copied to clipboard!<br><br><strong>Now paste this message in Telegram to Geo</strong><br><br><a href="tg://resolve?domain=heroicchristine" style="color:#4ecca3;">Open Telegram →</a>';
-                m.style.display = 'block';
-            });
+            
+            // Send to webhook
+            const m = document.getElementById('copyMsg');
+            m.innerHTML = 'Sending request to Geo...';
+            m.style.display = 'block';
+            
+            try {
+                const response = await fetch('http://3.129.67.188:3456/webhook/content-request', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({topics: topicData, timestamp: new Date().toISOString()})
+                });
+                const result = await response.json();
+                if (result.success) {
+                    m.innerHTML = '✓ ' + result.message;
+                } else {
+                    m.innerHTML = 'Error: ' + (result.error || 'Unknown error');
+                }
+            } catch (err) {
+                m.innerHTML = 'Error sending request. Please copy and paste manually.<br><br>' +
+                    '<button onclick="manualCopy()" style="padding:10px 20px;background:#4ecca3;color:#1a1a2e;border:none;border-radius:8px;cursor:pointer;">Copy Message</button>';
+            }
         });
+        
+        function manualCopy() {
+            const boxes = document.querySelectorAll('.topic-check:checked');
+            const topicData = [];
+            boxes.forEach(b => {
+                const card = b.closest('.topic-card');
+                const url = card.querySelector('.topic-link').href;
+                topicData.push({title: b.dataset.topic, url: url});
+            });
+            const msg = 'Geo, create content from these topics:\n\n' + topicData.map((tp, i) => (i + 1) + '. ' + tp.title + '\n   ' + tp.url).join('\n\n') + '\n\nPlease write scripts and posts for these.';
+            navigator.clipboard.writeText(msg);
+            document.getElementById('copyMsg').innerHTML = '✓ Copied to clipboard! Paste in Telegram.';
+        }
 
         loadTopics();
         console.log('=== Dashboard JavaScript loaded ===');
